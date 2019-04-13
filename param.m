@@ -16,7 +16,7 @@ t=[0 2 3 5];
 %% Durata del tratto parabolico (d_tk')
 % sarà utilizzato lo stesso valore per ogni punto
 dtp = 0.2;
-% dtp=0.6;
 
-accuracy = 0.1;
+
+accuracy = 0.001;
 
