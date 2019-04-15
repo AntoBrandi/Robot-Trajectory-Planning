@@ -306,13 +306,45 @@ while i<=length(time)
 end
 
 %% PRESENTING THE DATA
-figure(5)
+
+lt = t(1):accuracy:t(length(t));
+
+% Speed
+yp = diff(y);
+yp(length(y))=yp((length(y)-1));
+linear_trajectoryp=diff(linear_trajectory);
+linear_trajectoryp(length(linear_trajectory)) = linear_trajectoryp((length(linear_trajectory)-1));
+
+% Acceleration
+ypp = diff(yp);
+ypp(length(y))=ypp((length(y)-1));
+linear_trajectorypp=diff(linear_trajectoryp);
+linear_trajectorypp(length(linear_trajectory)) = linear_trajectorypp((length(linear_trajectory)-1));
+
+
+figure(1)
+subplot(3,1,1)
 plot(time,y,'LineWidth',2)
 hold on
 plot(t,q,'--o','MarkerSize',10,'Color','m')
-xlabel('Time - t [s]'),ylabel('Parameters - q [rad]')
-title('Interpolazione Parabolico Lineare in prossimità dei punti di via')
+xlabel('Time - [s]'),ylabel('Position - [rad]')
+title('Posizione')
 legend('Traiettoria Parabolico-Lineare','Traiettoria Lineare a Tratti')
 
+subplot(3,1,2)
+plot(time,yp,'LineWidth',2)
+hold on
+plot(lt,linear_trajectoryp,'--','Color','m')
+xlabel('Time - [s]'),ylabel('Speed - [rad/s]')
+title('Velocità')
+legend('Velocità Traiettoria Parabolico-Lineare','Velocità Traiettoria Lineare a Tratti')
+
+subplot(3,1,3)
+plot(time,ypp,'LineWidth',2)
+hold on
+plot(lt,linear_trajectorypp,'--','Color','m')
+xlabel('Time - [s]'),ylabel('Acceleration - [rad/s^2]')
+title('Accelerazione')
+legend('Accelerazione Traiettoria Parabolico-Lineare','Accelerazione Traiettoria Lineare a Tratti')
 
 
