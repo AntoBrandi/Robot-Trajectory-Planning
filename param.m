@@ -7,12 +7,10 @@
 % t --> Istanti di tempo di ciascun punto di via
 % dtp --> Durata del Tratto Parabolico
 % accuracy --> Precisione con la quale sarà rappresentata la traiettoria
-% debug --> Se >= 0 stampa nella Command Window informazioni per il debug
 
 
 %% Punti di via (qk) 
-% OSS. ciascun punto di via dovrebbe essere un vettore di parametri e non
-% uno scalare.
+% Coordinate dei punti di via per il singolo giunto
 q=[0 2*pi pi/2 pi];
 
 
@@ -21,10 +19,12 @@ t=[0 2 3 5];
 
 
 %% Durata del tratto parabolico (d_tk')
-% Sarà utilizzato lo stesso valore per ogni punto
-dtp = 0.6;
+% Sarà specificato un valore per ciascun punto di via
+%dtp = [0.1 0.9 0.9 0.5];
+% Oppure posso assegnare a tutti lo stesso valore
+dtp = 0.2*ones(1,length(q));
 
 %% Rappresentazione della traiettoria
 accuracy = 0.001;
-debug =0;
+
 

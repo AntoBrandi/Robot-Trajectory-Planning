@@ -66,7 +66,7 @@ end
 qpp=zeros(1,length(q)); % Preallocazione del vettore che conterrà qpp
 
 for i=1:length(q)
-    qpp(i)=(qp(i+1)-qp(i))/(dtp(i));
+    qpp(i)=(qp(i+1)-qp(i))/(dtp);
 end
 
 
@@ -84,6 +84,13 @@ time = t(1):accuracy:t(length(t));
 % Sfrutto la funzione interp1 per l'interpolazione lineare dei dati q,t nei
 % punti descritti da time.
 linear_trajectory = interp1(t,q,time,'linear');
+
+if debug==1
+    figure(1)
+    plot(time,linear_trajectory,'LineWidth',2,'Color','k')
+    xlabel('Time - t [s]'),ylabel('Parameters - q [rad]')
+    title('Interpolazione Lineare a Tratti per i Punti di Via')
+end
 
 
 
@@ -109,12 +116,16 @@ linear_trajectory = interp1(t,q,time,'linear');
 % Pertanto, la traiettoria finale parabolico lineare, avrà una durata
 % maggiore di un fattore [t_N - t_1 + (dtp_1 + dtp_N)/2]
 
-%parabole=zeros(length(q),(dtp/accuracy)+1); %Preallocazione matrice dei raccordi
+parabole=zeros(length(q),(dtp/accuracy)+1); %Preallocazione matrice dei raccordi
 
 % Per ogni punto di via, calcolo il corrispondente punto di partenza (tA,qA) 
 % e di arrivo (tB,qB) del raccordo parabolico tra il tratto lineare che precede 
 % il punto di via ed il successivo
 for j=1:length(q)
+    if debug == 1
+        fprintf('________________________________________\n');
+        fprintf('-- PARABOLIC TRAJECTORY CREATION j=%d \n',j);
+    end
     
     % ECCEZIONE RACCORDO INIZIALE
     % Punto di partenza del raccordo parabolico del primo punto di via ha:
@@ -123,13 +134,17 @@ for j=1:length(q)
     if j==1
 
         % punto iniziale
-        tA = t(j)-(dtp(j)/2);
+        tA = t(j)-(dtp/2);
         qA = q(j);
         
         % punto finale
-        tB = t(j)+(dtp(j)/2);
+        tB = t(j)+(dtp/2);
         qB = linear_trajectory(chop(((tB/accuracy)+1),5));
-
+        
+        if debug==1
+            fprintf('Parabola Iniziale\n');
+            fprintf('qa=%d,ta=%d,qb=%d,tb=%d\n',qA,tA,qB,tB);
+        end
         
     % ECCEZIONE RACCORDO FINALE
     % Punto di arrivo del raccordo parabolico dell'ultimo punto di via ha:
@@ -137,27 +152,37 @@ for j=1:length(q)
     % - ordinata = ordinata dell'ultimo punto di via + dtp/2
     elseif j==length(q)
         % punto iniziale
-        tA = t(j)-(dtp(j)/2);
+        tA = t(j)-(dtp/2);
         qA = linear_trajectory(chop(((tA/accuracy)+1),5));
         
         %punto finale
-        tB = t(j)+(dtp(j)/2);
+        tB = t(j)+(dtp/2);
         qB = q(j);
         
+        if debug==1
+            fprintf('Parabola Finale\n');
+            fprintf('qa=%d,ta=%d,qb=%d,tb=%d\n',qA,tA,qB,tB);
+        end
         
     % COMPORTAMENTO STANDARD # RACCORDO CENTRALE
     % Estraggo il punto iniziale (tA,qA) e finale (tB,qB) dalla traiettoria
     % lineare a tratti (linear_trajectory)
     else
+        if debug==1
+            fprintf('Parabola Centrale\n');
+        end
             
         % punto iniziale
-        tA = t(j)-(dtp(j)/2);
+        tA = t(j)-(dtp/2);
         qA = linear_trajectory(chop(((tA/accuracy)+1),5));
         
         % punto finale
-        tB = t(j)+(dtp(j)/2);
+        tB = t(j)+(dtp/2);
         qB = linear_trajectory(chop(((tB/accuracy)+1),5));
-
+        
+        if debug==1
+            fprintf('qa=%d,ta=%d,qb=%d,tb=%d\n',qA,tA,qB,tB);
+        end
     end
     
     % CALCOLO DEI COEFFICIENTI DELL'EQUAZIONE DEL RACCORDO PARABOLICO
@@ -179,14 +204,24 @@ for j=1:length(q)
     C = C';
     X = B*C;
     
+    if debug ==1
+        fprintf('I coefficienti della parabola %d esima sono a0=%d a1=%d a2=%d',j,X(1),X(2),X(3));
+    end
+    
     % Equazione del raccordo Parabolico
     time = tA:accuracy:tB;
     p = X(1) + X(2)*time + X(3)*(time.^2);
     
-    for i=1:((dtp(j)/accuracy)+1)
+    for i=1:((dtp/accuracy)+1)
         parabole(j,i)= p(i);
     end
     
+    if debug==1
+        figure(j+1)
+        plot(time,p);
+        title('Raccordo Parabolico');
+        xlabel('Time - t [s]'),ylabel('Parameters - q [rad]')
+    end
 end
 
 
@@ -203,7 +238,7 @@ end
 % Si consideri anche che la durata della nuova traiettoria
 % paraboilico-lineare (y) sarà maggiore rispetto alla traiettoria lineare
 % di un fattore [t_N - t_1 + (dtp_1 + dtp_N)/2]
-time = (t(1)-(dtp(1)/2)):accuracy:(t(length(t))+(dtp(length(dtp))/2));
+time = (t(1)-(dtp/2)):accuracy:(t(length(t))+(dtp/2));
 % Vettore che conterrà la traiettoria finale parabolico-lineare
 y = zeros(1,length(time));
 
@@ -224,28 +259,50 @@ y = zeros(1,length(time));
 %       sarà reinizializzato ad 1 ad ogni nuovo raccordo
 i=1;j=1;k=1;
 while i<=length(time)
+    if debug == 2
+        fprintf('-------------------------------------------\n');
+        fprintf('-- NEW LOOP i=%d, time(i)=%d --\n',i,time(i));
+        fprintf('-- t(j)-(dtp/2)=%d -- t(j)+(dtp/2)=%d \n',(t(j)-(dtp/2)),(t(j)+(dtp/2)))
+    end
     
     % TRATTO PARABOLICO
     % Istante di tempo attuale nell'intorno del punto di via di dimensione dtp/2
-    if ((chop((time(i)),5)>=chop((t(j)-(dtp(j)/2)),5)) && (chop(time(i),5))<=chop((t(j)+(dtp(j)/2)),5))
+    if ((chop((time(i)),5)>=chop((t(j)-(dtp/2)),5)) && (chop(time(i),5))<=chop((t(j)+(dtp/2)),5))
+        if debug == 2
+            fprintf('Parabolic Loop for j = %d and i= %d \n',j,i);
+        end
         % Reinizializzo k ad ogni nuovo punto di via
-        if chop(time(i),5) == chop((t(j)-(dtp(j)/2)),5)
-            k=1;          
+        if chop(time(i),5) == chop((t(j)-(dtp/2)),5)
+            k=1;
+            if debug == 2
+               fprintf('Resetting k = %d \n',k);
+            end
+            
+        end
+        
+        if debug == 2
+           fprintf('Setting Parabolic y value for indeces i = %d, j=%d, k=%d \n',i,j,k);
         end
         % Assegno ad y(i) il valore del tratto parabolico all'istante corrispondente 
         y(i)=parabole(j,k);
         
         % Incremento j alla fine di ciascun tratto parabolico
-        if chop(time(i),5) == chop((t(j)+(dtp(j)/2)),5)
+        if chop(time(i),5) == chop((t(j)+(dtp/2)),5)
             j=j+1;
+            if debug == 2
+               fprintf('Incrementing j = %d \n',j);
+            end
         end
     
     % TRATTO LINEARE
     % Istante di tempo attuale fuori dall'intorno del punto di via di dimensione dtp/2
     else
-      
+        
+        if debug == 2
+           fprintf('Setting Linear y value for index i = %d \n',i);
+        end
         % Assegno ad y(i) il valore del tratto lineare all'istante corrispondente 
-        y(i)=linear_trajectory(i-((dtp(1)/2)/accuracy));
+        y(i)=linear_trajectory(i-((dtp/2)/accuracy));
     end
     
     k=k+1;
