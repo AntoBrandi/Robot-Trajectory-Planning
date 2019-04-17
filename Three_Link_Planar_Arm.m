@@ -13,7 +13,7 @@ run robot_param
 
 
 % Definisco ciascun braccio (link) del robot attraverso la convenzione di
-% Denavit-Haremberg standard) in presenza di tre giunti rotoidali (0)
+% Denavit-Haremberg standard) in presenza di due giunti rotoidali (0)
 L = Link([0,0.1,0.2,pi/2,0]);
 % theta di ai alphai
 L(1) = Link([0 0 A(1) 0],'standard');
@@ -23,7 +23,7 @@ L(2) = Link([0 0 A(2) 0],'standard');
 % deve essere studiato.
 planar_robot = SerialLink(L,'name','planar robot');
 
-%% Estrazione delle coordinata dell'organo terminale del manipolatore nella posa iniziale e finale
+%% Estrazione delle coordinate dell'organo terminale del manipolatore nella posa iniziale e finale
 % POSA INIZIALE
 % Matrice di trasformazione omogenea riferita alla posa iniziale del robot
 TI = transl(pI(1), pI(2), 0);
@@ -40,7 +40,7 @@ qF = planar_robot.ikine(TF,[0 0],'mask',[1 1 0 0 0 0]);
 
 %% Generazione della traiettoria cartesiana
 % Matrice di trasformazione omogenea estratta istante per istante
-T = ctraj(TI,TF,s);
+T = ctraj(TI,TF,chop(s,6));
 
 %% Estrazione dei punti di via
 % Dalla traiettoria cartesiana estratta precedentemente estraggo un certo
@@ -74,30 +74,29 @@ while i<=(n_via-2)
     qT = planar_robot.ikine(T(:,:,i*distance),[0 0],'mask',[1 1 0 0 0 0]);
     q(1,i+1)=qT(1);
     q(2,i+1)=qT(2);
-    t(1,i+1)=(tf*(i*distance))/length(s);
+    % Uso una semplice proporzione per la determinazione del vettore t
+    t(1,i+1)=t(1,i)+(tf/(n_via-1));
     
     % Incremento i per l'interazione successiva
     i=i+1;
 end
 
 %% Traiettoria nello spazio dei giunti
-% Parametri utili all'esecuzione del calcolo della traiettoria per ciascun
-% giunto del manipolatore
 
-% Durata del tratto parabolico (d_tk')
-dtp = 0.2*ones(1,length(q));
 
 % Per ciscun giunto del manipolatore calcolo la traiettoria con l'algoritmo
 % di interpolazione parabolico-lineare in prossimità dei punti di via
+% Essendo un robot planare a due bracci ho solo due giunti
+% Calcolo la traiettoria di ciascun giunto
 
-
-
-
-
+run Trajectory_Planning_Adapted
 
 
 % RAPPRESENTAZIONE DEL MANIPOLATORE PLANARE A DUE BRACCI (posa iniziale)
-planar_robot.plot([qI(1) qI(2)]),axis equal
+% planar_robot.plot([qI(1) qI(2)]),axis equal
+
+
+
 
 
 

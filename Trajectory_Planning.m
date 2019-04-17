@@ -11,7 +11,7 @@
 
 run param
 
-
+t = chop(t,4);
 %% Fase di calcolo preeliminare 
 % Calcolo i rimanenti parametri utili all'esecuzione dell'algoritmo
 %
@@ -29,6 +29,12 @@ d_tk = zeros(size(q)-1);    % Preallocazione del vettore che conterrà d_tk
 % La dimensione di questo vettore sarà N-1
 for i = 1:(length(q)-1)
     d_tk(i) = t(i+1)-t(i);
+    
+    % Error Management
+    if d_tk(i) <=  dtp(i)
+        error('dtp troppo grande! Riduci dtp o aumenta il tempo tra due punti consecutivi');
+    end
+    
 end
 
 
@@ -288,6 +294,7 @@ legend('Velocità Traiettoria Parabolico-Lineare','Velocità Traiettoria Lineare a
 
 subplot(3,1,3)
 plot(time,ypp,'LineWidth',2)
+ylim([-1e-04 1e-04])
 hold on
 plot(lt,linear_trajectorypp,'--','Color','m')
 xlabel('Time - [s]'),ylabel('Acceleration - [rad/s^2]')
