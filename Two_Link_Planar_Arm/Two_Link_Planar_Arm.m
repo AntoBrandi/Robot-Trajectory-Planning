@@ -100,12 +100,6 @@ end
 % Essendo un robot planare a due bracci ho solo due giunti
 % Calcolo la traiettoria di ciascun giunto
 
-% PIANIFICAZIONE DELLA TRAIETTORIA NELLO SPAZIO DEI GIUNTI
-% Parametri utili all'esecuzione del calcolo della traiettoria per ciascun
-% giunto del manipolatore
-% Durata del tratto parabolico (d_tk')
-dtp = 0.2*ones(1,length(q));
-
 run Trajectory_Planning_Adapted
 
 

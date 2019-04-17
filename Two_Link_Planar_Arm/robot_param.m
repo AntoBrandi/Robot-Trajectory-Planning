@@ -1,7 +1,6 @@
 %% ROBOT PARAMETERS FILE
 % Specifico i parametri utili per il dimensionamento del robot, della sua
 % posa e della sua traiettoria tra la posa iniziale e quella finale
-
 % LUNGHEZZA DEI BRACCI
 % Si faccia sempre riferimento al caso di un manipolatore planare a due
 % bracci
@@ -51,12 +50,9 @@ s=X(1) + X(2)*t + X(3)*(t.^2) + X(4)*(t.^3);
 % tra loro
 n_via = 10;
 
-
-
-
-
-
-
-
-
+% PIANIFICAZIONE DELLA TRAIETTORIA NELLO SPAZIO DEI GIUNTI
+% Parametri utili all'esecuzione del calcolo della traiettoria per ciascun
+% giunto del manipolatore
+% Durata del tratto parabolico (d_tk')
+dtp = 0.2*ones(1,n_via);
 
