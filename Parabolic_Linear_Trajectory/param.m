@@ -15,7 +15,7 @@ q=[0 2*pi pi/2 pi];
 
 
 %% Istanti di tempo in corrispondenza dei punti di via (d_tk)
-t=[0 2 3 5];
+t=[0 3 4 5];
 
 
 %% Durata del tratto parabolico (d_tk')

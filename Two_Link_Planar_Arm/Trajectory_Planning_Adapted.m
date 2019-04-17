@@ -135,7 +135,7 @@ for r = 1:planar_robot.n
 
             % punto finale
             tB = t(j)+(dtp(j)/2);
-            qB = linear_trajectory(chop(((tB/accuracy)+1),5));
+            qB = linear_trajectory((chop(((tB/accuracy)+1),5))-(t(1)/accuracy));
 
 
         % ECCEZIONE RACCORDO FINALE
@@ -145,7 +145,7 @@ for r = 1:planar_robot.n
         elseif j==length(q(r,:))
             % punto iniziale
             tA = t(j)-(dtp(j)/2);
-            qA = linear_trajectory(chop(((tA/accuracy)+1),5));
+            qA = linear_trajectory((chop(((tA/accuracy)+1),5))-(t(1)/accuracy));
 
             %punto finale
             tB = t(j)+(dtp(j)/2);
@@ -159,11 +159,11 @@ for r = 1:planar_robot.n
 
             % punto iniziale
             tA = t(j)-(dtp(j)/2);
-            qA = linear_trajectory(chop(((tA/accuracy)+1),5));
+            qA = linear_trajectory((chop(((tA/accuracy)+1),5))-(t(1)/accuracy));
 
             % punto finale
             tB = t(j)+(dtp(j)/2);
-            qB = linear_trajectory(chop(((tB/accuracy)+1),5));
+            qB = linear_trajectory((chop(((tB/accuracy)+1),5))-(t(1)/accuracy));
 
         end
 

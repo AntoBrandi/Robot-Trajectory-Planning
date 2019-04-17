@@ -21,7 +21,7 @@ L(1) = Link([0 0 a(1) 0],'standard');
 L(2) = Link([0 0 a(2) 0],'standard');
 
 % Creo l'oggetto @planar_robot che conterrà le informazioni del robot che
-% deve essere studiato.
+% deve essere studiato
 planar_robot = SerialLink(L,'name','planar robot');
 
 %% Estrazione delle coordinate dell'organo terminale del manipolatore nella posa iniziale e finale
@@ -37,6 +37,16 @@ qI = planar_robot.ikine(TI,[0 0],'mask',[1 1 0 0 0 0]);
 TF = transl(pF(1),pF(2),0);
 % Vettore dei parametri di giunto che realizzano la posa finale
 qF = planar_robot.ikine(TF,[0 0],'mask',[1 1 0 0 0 0]);
+
+
+% Gestione Errori - POSIZIONE IRRAGGIUNGIBILE
+if (length(qI)<=0)
+    error('Posa iniziale irraggiungibile');
+end
+if (length(qF)<=0)
+    error('Posa finale irraggiungibile');
+end
+
 
 
 %% Generazione della traiettoria cartesiana
@@ -88,7 +98,7 @@ while i<=(n_via-2)
     q(1,i+1)=qT(1);
     q(2,i+1)=qT(2);
     % Uso una semplice proporzione per la determinazione del vettore t
-    t(1,i+1)=t(1,i)+(tf/(n_via-1));
+    t(1,i+1)=t(1,i)+((tf-ti)/(n_via-1));
     
     % Incremento i per l'interazione successiva
     i=i+1;
