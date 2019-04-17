@@ -9,12 +9,12 @@ a = [1 1];
 % POSA INIZIALE
 % Si riferisce alle coordinate cartesiane dell'organo terminale nel punto
 % iniziale
-pI = [1, 1];
+pI = [1.5, 1.3];
 
 % POSA FINALE
 % Si riferisce alle coordinate cartesiane dell'organo terminale nel punto
 % finale
-pF = [-1, -1];
+pF = [1.5, -1.3];
 
 % DURATA
 % Tempo che intercorre tra la posa iniziale e quella finale

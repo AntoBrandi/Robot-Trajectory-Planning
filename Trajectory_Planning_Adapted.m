@@ -1,11 +1,18 @@
-%%  ROBOT TRAJECTORY PLANNING
-% The scope of this code is to create an algorithm to set a trajectory for
-% a robot interpolating linear polynomials with parabolic blends
+%%  ROBOT TRAJECTORY PLANNING ADAPTED FOR PLANAR ROBOT
+% Questo script conterrà le stesse funzioni dello script
+% Trajectory_Planning e sarà cioè sempre utilizzato per la generazione di
+% una traiettoria parabolico-lineare passante in prossimità dei punti di
+% via, ma sarà ottimizzato per la generazione di una traiettoria nello
+% spazio dei giunti di un robot manipolatore planare a due bracci.
 
-
+% Dal momento che i parametri saranno provenienti dal manipolatore, è bene
+% operare alcune approssimazioni sui dati
 t = chop(t,3);
 
-for r = 1:2
+%% Codice da eseguire tante volte quanti sono i giunti del manipolatore
+% Con planar_robot.n conto il numero di giunti del robot planare sul quale
+% calcolare le traiettorie
+for r = 1:planar_robot.n
     %% Fase di calcolo preeliminare 
     % Calcolo i rimanenti parametri utili all'esecuzione dell'algoritmo
     %
@@ -285,7 +292,7 @@ for r = 1:2
     xlabel('Time - [s]'),ylabel('Speed - [rad/s]')
     title('Velocità')
     legend('Velocità Traiettoria Parabolico-Lineare','Velocità Traiettoria Lineare a Tratti')
-
+ 
     subplot(3,1,3)
     plot(time,ypp,'LineWidth',2)
     ylim([-1e-04 1e-04])
@@ -294,4 +301,9 @@ for r = 1:2
     xlabel('Time - [s]'),ylabel('Acceleration - [rad/s^2]')
     title('Accelerazione')
     legend('Accelerazione Traiettoria Parabolico-Lineare','Accelerazione Traiettoria Lineare a Tratti')
+    
+    %% Store trajectory for the animation
+    % Conservo la traiettoria di ciascun giunto in una matrice che sarà
+    % utilizzata per la realizzazione dell'animazione del robot.
+    Q(:,r)=y;
 end

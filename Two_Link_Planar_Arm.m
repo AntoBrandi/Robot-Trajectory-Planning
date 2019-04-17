@@ -99,8 +99,10 @@ dtp = 0.2*ones(1,length(q));
 run Trajectory_Planning_Adapted
 
 
-% RAPPRESENTAZIONE DEL MANIPOLATORE PLANARE A DUE BRACCI (posa iniziale)
-% planar_robot.plot([qI(1) qI(2)]),axis equal
+% RAPPRESENTAZIONE DEL MANIPOLATORE PLANARE A DUE BRACCI
+figure(3)
+planar_robot.plot(Q,'delay',1e-10);
+
 
 
 
