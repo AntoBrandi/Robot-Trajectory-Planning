@@ -48,7 +48,7 @@ s=X(1) + X(2)*t + X(3)*(t.^2) + X(4)*(t.^3);
 % Scelta del numero di punti di via da estrarre dalla traiettoria dello
 % spazio operativo. Tali punti saranno scelti per semplicità equidistanti
 % tra loro
-n_via = 6;
+n_via = 10;
 
 
 

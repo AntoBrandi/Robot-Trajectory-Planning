@@ -11,18 +11,18 @@
 
 %% Punti di via (qk) 
 % Coordinate dei punti di via per il singolo giunto
-q=[0 2*pi pi/2 pi 7 8];
+q=[0 2*pi pi/2 pi];
 
 
 %% Istanti di tempo in corrispondenza dei punti di via (d_tk)
-t=[0 1.5 2 3.1325 3.754 5];
+t=[0 2 3 5];
 
 
 %% Durata del tratto parabolico (d_tk')
 % Sarà specificato un valore per ciascun punto di via
 %dtp = [0.1 0.9 0.9 0.5];
 % Oppure posso assegnare a tutti lo stesso valore
-dtp = 0.2*ones(1,length(q));
+dtp = 0.3*ones(1,length(q));
 
 %% Rappresentazione della traiettoria
 accuracy = 0.001;

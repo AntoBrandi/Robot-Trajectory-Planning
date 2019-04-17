@@ -3,7 +3,7 @@
 % a robot interpolating linear polynomials with parabolic blends
 
 
-t = chop(t,4);
+t = chop(t,3);
 
 for r = 1:2
     %% Fase di calcolo preeliminare 

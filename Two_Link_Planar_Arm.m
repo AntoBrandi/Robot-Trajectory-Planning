@@ -6,7 +6,7 @@
 % l'algoritmo di pianificazione della traiettoria passante in prossimità
 % dei punti di via.
 clear all
-clc
+
 %% Definizione del Robot
 % Carico i parametri che specificano le dimensioni e la posa del
 % manipolatore

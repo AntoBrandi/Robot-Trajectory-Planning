@@ -1,7 +1,7 @@
 %%  ROBOT TRAJECTORY PLANNING
 % The scope of this code is to create an algorithm to set a trajectory for
 % a robot interpolating linear polynomials with parabolic blends
-
+clear all
 
 %% Load Parameters
 % Conterrà tutte le informazioni sulla traiettoria
@@ -11,7 +11,7 @@
 
 run param
 
-t = chop(t,4);
+t = chop(t,3);
 %% Fase di calcolo preeliminare 
 % Calcolo i rimanenti parametri utili all'esecuzione dell'algoritmo
 %
