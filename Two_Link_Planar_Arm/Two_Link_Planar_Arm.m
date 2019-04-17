@@ -41,34 +41,46 @@ qF = planar_robot.ikine(TF,[0 0],'mask',[1 1 0 0 0 0]);
 
 %% Generazione della traiettoria cartesiana
 % Matrice di trasformazione omogenea estratta istante per istante
+% In T sarà contenuta una traiettoria nello spazio operativo, ovvero una
+% sequenza di pose nelle quali l'organo terminale del manipolatore debba
+% trovarsi
+% E' stata utilizzata una equazione polinomiale per definire l'ascissa
+% curvilinea s in funzione del tempo t
 T = ctraj(TI,TF,chop(s,6));
 
 %% Estrazione dei punti di via
 % Dalla traiettoria cartesiana estratta precedentemente estraggo un certo
-% numero di punto di via specificato nel file dei parametri, che siano
+% numero di punti di via specificato nel file dei parametri, che siano
 % equidistanti tra loro e sui quali effettuo una operazione di inversione
 % cinematica
+% distance = distanza tra due punti di via consecutivi. Sto supponendo che
+% siano equidistanti i punti di via estratti
 distance=floor(length(s)/(n_via-2));
 
 % Assegno alla matrice q l'insieme dei punti di via per ciascun giunto 
 % RIGHE = giunti del manipolatore
 % COLONNE = numero dei punti di via scelti
-q = zeros(2,n_via); % Preallocazione della memoria
+q = zeros(planar_robot.n,n_via); % Preallocazione della memoria
 % Assegno alla matrice t gli istanti di tempo associati a ciascun punto
 t = zeros(1,n_via); % Preallocazione della memoria
 
-% Primo punto di via qI
+% ECCEZIONE Primo punto di via qI
 q(1,1)=qI(1);
 q(2,1)=qI(2);
 t(1,1)=ti;
 
-
-% Ultimo punto di via
+% ECCEZIONE Ultimo punto di via qF
 q(1,length(q))=qF(1);
 q(2,length(q))=qF(2);
 t(1,length(q))=tf;
 
-% Punti di via intermedi
+% COMPORTAMENTO STANDARD Punti di via intermedi
+% In corrispondenza dell'istante al quale ho disposto i punti di via,
+% estraggo la posa dell'organo terminale in quell'istante dal vettore delle
+% pose T e dalla specifica matrice di trasformazione omogenea nello
+% specifico istante, effettuo l'inversione cinematica per conoscere in
+% quell'istante i valori dei parametri di giunto che ne garantiscano la
+% posa
 i=1;
 while i<=(n_via-2)
     % Inversione cinematica sul k-esimo elemento della traiettoria T
@@ -83,8 +95,6 @@ while i<=(n_via-2)
 end
 
 %% Traiettoria nello spazio dei giunti
-
-
 % Per ciscun giunto del manipolatore calcolo la traiettoria con l'algoritmo
 % di interpolazione parabolico-lineare in prossimità dei punti di via
 % Essendo un robot planare a due bracci ho solo due giunti
@@ -99,7 +109,10 @@ dtp = 0.2*ones(1,length(q));
 run Trajectory_Planning_Adapted
 
 
-% RAPPRESENTAZIONE DEL MANIPOLATORE PLANARE A DUE BRACCI
+%% Animazione del manipolatore 
+% Rappresentazione della animazione del planar_robot facendo seguire a
+% ciascun giunto la traiettoria che è stata calcolata dall'algoritmo di
+% pianificazione
 figure(3)
 planar_robot.plot(Q,'delay',1e-10);
 

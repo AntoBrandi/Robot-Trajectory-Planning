@@ -1,9 +1,10 @@
 %% ROBOT PARAMETERS FILE
-% Dal momento che i parametri si riferiscono ad un robot planare a due
-% bracci, gli unici parametri non nulli che è necessario specificare dalla
-% convenzione di Denavit-Hartemberg sono Ai e Thetai.
+% Specifico i parametri utili per il dimensionamento del robot, della sua
+% posa e della sua traiettoria tra la posa iniziale e quella finale
 
 % LUNGHEZZA DEI BRACCI
+% Si faccia sempre riferimento al caso di un manipolatore planare a due
+% bracci
 a = [1 1];
 
 % POSA INIZIALE
