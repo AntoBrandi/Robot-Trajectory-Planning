@@ -2,7 +2,10 @@
 % The scope of this code is to create an algorithm to set a trajectory for
 % a robot interpolating linear polynomials with parabolic blends
 
-for r=1:2
+
+t = chop(t,4);
+
+for r = 1:2
     %% Fase di calcolo preeliminare 
     % Calcolo i rimanenti parametri utili all'esecuzione dell'algoritmo
     %
@@ -20,6 +23,12 @@ for r=1:2
     % La dimensione di questo vettore sarà N-1
     for i = 1:(length(q(r,:))-1)
         d_tk(i) = t(i+1)-t(i);
+
+        % Error Management
+        if d_tk(i) <=  dtp(i)
+            error('dtp troppo grande! Riduci dtp o aumenta il tempo tra due punti consecutivi');
+        end
+
     end
 
 
@@ -236,7 +245,7 @@ for r=1:2
         else
 
             % Assegno ad y(i) il valore del tratto lineare all'istante corrispondente 
-            y(i)=linear_trajectory(chop(i-((dtp(1)/2)/accuracy),5));
+            y(i)=linear_trajectory(i-((dtp(1)/2)/accuracy));
         end
 
         k=k+1;
@@ -279,6 +288,7 @@ for r=1:2
 
     subplot(3,1,3)
     plot(time,ypp,'LineWidth',2)
+    ylim([-1e-04 1e-04])
     hold on
     plot(lt,linear_trajectorypp,'--','Color','m')
     xlabel('Time - [s]'),ylabel('Acceleration - [rad/s^2]')

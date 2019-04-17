@@ -4,7 +4,7 @@
 % convenzione di Denavit-Hartemberg sono Ai e Thetai.
 
 % LUNGHEZZA DEI BRACCI
-A = [1 1];
+a = [1 1];
 
 % POSA INIZIALE
 % Si riferisce alle coordinate cartesiane dell'organo terminale nel punto
@@ -48,13 +48,7 @@ s=X(1) + X(2)*t + X(3)*(t.^2) + X(4)*(t.^3);
 % Scelta del numero di punti di via da estrarre dalla traiettoria dello
 % spazio operativo. Tali punti saranno scelti per semplicità equidistanti
 % tra loro
-n_via = 9;
-
-% PIANIFICAZIONE DELLA TRAIETTORIA NELLO SPAZIO DEI GIUNTI
-% Parametri utili all'esecuzione del calcolo della traiettoria per ciascun
-% giunto del manipolatore
-% Durata del tratto parabolico (d_tk')
-dtp = 0.2*ones(1,length(q));
+n_via = 6;
 
 
 

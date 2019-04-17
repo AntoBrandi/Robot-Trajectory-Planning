@@ -5,7 +5,8 @@
 % set di punti, pianificare la traiettoria di ciascun giunto con
 % l'algoritmo di pianificazione della traiettoria passante in prossimità
 % dei punti di via.
-
+clear all
+clc
 %% Definizione del Robot
 % Carico i parametri che specificano le dimensioni e la posa del
 % manipolatore
@@ -16,8 +17,8 @@ run robot_param
 % Denavit-Haremberg standard) in presenza di due giunti rotoidali (0)
 L = Link([0,0.1,0.2,pi/2,0]);
 % theta di ai alphai
-L(1) = Link([0 0 A(1) 0],'standard');
-L(2) = Link([0 0 A(2) 0],'standard');
+L(1) = Link([0 0 a(1) 0],'standard');
+L(2) = Link([0 0 a(2) 0],'standard');
 
 % Creo l'oggetto @planar_robot che conterrà le informazioni del robot che
 % deve essere studiato.
@@ -88,6 +89,12 @@ end
 % di interpolazione parabolico-lineare in prossimità dei punti di via
 % Essendo un robot planare a due bracci ho solo due giunti
 % Calcolo la traiettoria di ciascun giunto
+
+% PIANIFICAZIONE DELLA TRAIETTORIA NELLO SPAZIO DEI GIUNTI
+% Parametri utili all'esecuzione del calcolo della traiettoria per ciascun
+% giunto del manipolatore
+% Durata del tratto parabolico (d_tk')
+dtp = 0.2*ones(1,length(q));
 
 run Trajectory_Planning_Adapted
 
