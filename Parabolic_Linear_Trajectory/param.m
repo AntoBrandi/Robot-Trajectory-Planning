@@ -15,14 +15,14 @@ q=[0 2*pi pi/2 pi];
 
 
 %% Istanti di tempo in corrispondenza dei punti di via (d_tk)
-t=[0 3 4 5];
+t=[0 2 3 5];
 
 
 %% Durata del tratto parabolico (d_tk')
 % Sarà specificato un valore per ciascun punto di via
 %dtp = [0.1 0.9 0.9 0.5];
 % Oppure posso assegnare a tutti lo stesso valore
-dtp = 0.3*ones(1,length(q));
+dtp = 0.6*ones(1,length(q));
 
 %% Rappresentazione della traiettoria
 accuracy = 0.001;

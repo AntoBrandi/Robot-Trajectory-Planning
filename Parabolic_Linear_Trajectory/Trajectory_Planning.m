@@ -300,4 +300,3 @@ plot(lt,linear_trajectorypp,'--','Color','m')
 xlabel('Time - [s]'),ylabel('Acceleration - [rad/s^2]')
 title('Accelerazione')
 legend('Accelerazione Traiettoria Parabolico-Lineare','Accelerazione Traiettoria Lineare a Tratti')
-
