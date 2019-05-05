@@ -117,8 +117,10 @@ run Trajectory_Planning_Adapted
 % Rappresentazione della animazione del planar_robot facendo seguire a
 % ciascun giunto la traiettoria che è stata calcolata dall'algoritmo di
 % pianificazione
+
 figure(3)
 planar_robot.plot(Q,'delay',1e-10);
+
 
 
 
